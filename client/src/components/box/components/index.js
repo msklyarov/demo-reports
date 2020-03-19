@@ -11,45 +11,41 @@ const style = {
 };
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      width: 200,
-      height: 200,
-      x: 10,
-      y: 10,
-    };
-  }
-
   render() {
     return (
       <Rnd
         style={style}
-        size={{ width: this.state.width, height: this.state.height }}
-        position={{ x: this.state.x, y: this.state.y }}
+        size={{ width: this.props.data.width, height: this.props.data.height }}
+        position={{ x: this.props.data.x, y: this.props.data.y }}
         onDragStart={e => {
-          e.stopPropagation();
           this.props.setActionAction('drag');
         }}
         onDragStop={(e, d) => {
-          e.stopPropagation();
           setTimeout(() => this.props.setActionAction(null), 100);
-          this.setState({ x: d.x, y: d.y });
+          // this.setState({ x: d.x, y: d.y });
+
+          this.props.placeWidgetAction(this.props.data.id, d.x, d.y);
         }}
         onResizeStart={e => this.props.setActionAction('resize')}
         onResizeStop={(e, direction, ref, delta, position) => {
           setTimeout(() => this.props.setActionAction(null), 100);
-          this.setState({
-            width: ref.style.width,
-            height: ref.style.height,
-            ...position,
-          });
+
+          this.props.placeWidgetAction(
+            this.props.data.id,
+            position.x,
+            position.y,
+          );
+          this.props.resizeWidgetAction(
+            this.props.data.id,
+            ref.style.width,
+            ref.style.height,
+          );
         }}
       >
         <Widgets
           data={this.props.data}
-          width={this.state.width}
-          height={this.state.height}
+          width={this.props.data.width}
+          height={this.props.data.height}
         />
       </Rnd>
     );

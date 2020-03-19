@@ -23,7 +23,9 @@ export default ({ createWidgetAction, action, activeWidget }) => (
         marginLeft: '0.5em',
       }}
       onClick={() =>
-        activeWidget && !action && createWidgetAction(activeWidget)
+        activeWidget &&
+        !action &&
+        createWidgetAction(activeWidget, 200, 100, 10, 10)
       }
     >
       <Canvas />
